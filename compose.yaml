@@ -1,1 +1,13 @@
-services: {}
+services:
+  couchbase:
+    image: couchbase/server:community
+    container_name: carona-couchbase
+    ports:
+      - "8091:8091"
+      - "8093:8093"
+      - "11210:11210"
+    volumes:
+      - couchbase_data:/opt/couchbase/var
+
+volumes:
+  couchbase_data:
