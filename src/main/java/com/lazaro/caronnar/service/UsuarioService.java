@@ -36,7 +36,7 @@ public class UsuarioService {
         usuario.setEmail(dto.email());
         usuario.setSenha(passwordEncoder.encode(dto.senha()));
         usuario.setTelefone(dto.telefone());
-        usuario.setPapeis(Set.of(PapelUsuario.PASSAGEIRO));
+        usuario.setPapeis(Set.of(PapelUsuario.PASSAGEIRO, PapelUsuario.MOTORISTA));
         usuario.setDataCadastro(LocalDateTime.now());
 
         Usuario salvo = usuarioRepository.save(usuario);
