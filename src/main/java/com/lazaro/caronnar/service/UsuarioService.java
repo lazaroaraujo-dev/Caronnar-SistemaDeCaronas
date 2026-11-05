@@ -4,18 +4,30 @@ import com.lazaro.caronnar.dto.usuario.CadastroUsuarioDTO;
 import com.lazaro.caronnar.dto.usuario.UsuarioRespostaDTO;
 import com.lazaro.caronnar.exception.EmailJaCadastradoException;
 import com.lazaro.caronnar.exception.RecursoNaoEncontradoException;
+import com.lazaro.caronnar.exception.SenhaInvalidaException;
 import com.lazaro.caronnar.model.entities.Usuario;
 import com.lazaro.caronnar.model.enums.PapelUsuario;
 import com.lazaro.caronnar.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class UsuarioService {
+
+    private static final int LIMITE_BYTES_BCRYPT = 72;
+
+    private static final Set<String> SENHAS_COMUNS = Set.of(
+            "1234",
+            "12345678",
+            "password",
+            "qwerty123"
+    );
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
@@ -26,6 +38,7 @@ public class UsuarioService {
     }
 
     public UsuarioRespostaDTO cadastrar(CadastroUsuarioDTO dto) {
+        validarSenha(dto.senha());
         if (usuarioRepository.existsByEmail(dto.email())) {
             throw new EmailJaCadastradoException(dto.email());
         }
@@ -50,6 +63,18 @@ public class UsuarioService {
                         "Usuário não encontrado com o ID: " + id));
 
         return toRespostaDTO(usuario);
+    }
+
+    private void validarSenha(String senha) {
+        if (senha.getBytes(StandardCharsets.UTF_8).length > LIMITE_BYTES_BCRYPT) {
+            throw new SenhaInvalidaException(
+                    "A senha é muito longa: o limite é de 72 bytes quando codificada em UTF-8.");
+        }
+
+        if (SENHAS_COMUNS.contains(senha.toLowerCase(Locale.ROOT))) {
+            throw new SenhaInvalidaException(
+                    "A senha informada é muito comum. Escolha uma senha mais segura.");
+        }
     }
 
     private UsuarioRespostaDTO toRespostaDTO(Usuario usuario) {

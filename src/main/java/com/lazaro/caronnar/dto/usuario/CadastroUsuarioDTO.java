@@ -2,6 +2,7 @@ package com.lazaro.caronnar.dto.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record CadastroUsuarioDTO(
 
@@ -13,6 +14,7 @@ public record CadastroUsuarioDTO(
         String email,
 
         @NotBlank(message = "A senha é obrigatória")
+        @Size(min = 12, max = 72, message = "A senha deve conter entre 12 e 72 caracteres")
         String senha,
 
         String telefone
