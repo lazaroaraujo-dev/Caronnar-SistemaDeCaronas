@@ -1,8 +1,10 @@
 package com.lazaro.caronnar.controller;
 
+import com.lazaro.caronnar.config.OpenApiConfig;
 import com.lazaro.caronnar.dto.usuario.CadastroUsuarioDTO;
 import com.lazaro.caronnar.dto.usuario.UsuarioRespostaDTO;
 import com.lazaro.caronnar.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = OpenApiConfig.SECURITY_SCHEME_NAME)
     public ResponseEntity<UsuarioRespostaDTO> buscarPorId(@PathVariable String id) {
         UsuarioRespostaDTO resposta = usuarioService.buscarPorId(id);
         return ResponseEntity.ok(resposta);

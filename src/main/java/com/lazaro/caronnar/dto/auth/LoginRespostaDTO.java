@@ -3,6 +3,9 @@ package com.lazaro.caronnar.dto.auth;
 import java.util.Set;
 
 public record LoginRespostaDTO(
+        String token,
+        String tipo,
+        long expiraEmSegundos,
         String id,
         String nome,
         String email,
