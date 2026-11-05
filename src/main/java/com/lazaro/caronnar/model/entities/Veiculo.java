@@ -21,4 +21,10 @@ public class Veiculo {
     private String placa;
     private String modelo;
     private String cor;
+
+    /**
+     * Capacidade de passageiros do veículo, excluindo o motorista (entre 1 e 8).
+     */
+    private Integer capacidadePassageiros;
+    private Boolean ativo;
 }

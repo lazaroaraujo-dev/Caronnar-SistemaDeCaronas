@@ -32,6 +32,7 @@ public class VeiculoService {
         Veiculo veiculo = VeiculoMapper.paraEntidade(dto);
         veiculo.setId(UUID.randomUUID().toString());
         veiculo.setMotoristaId(motoristaId);
+        veiculo.setAtivo(true);
 
         Veiculo salvo = veiculoRepository.save(veiculo);
 

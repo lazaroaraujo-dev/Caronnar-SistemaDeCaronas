@@ -12,3 +12,8 @@ security:
   jwt:
     secret: ${JWT_SECRET}
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+
+app:
+  veiculo:
+    cadastro-ativo: ${CADASTRO_VEICULO_ATIVO:false}
+

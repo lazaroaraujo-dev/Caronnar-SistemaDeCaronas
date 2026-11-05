@@ -3,6 +3,7 @@ package com.lazaro.caronnar.mapper;
 import com.lazaro.caronnar.dto.veiculo.CadastroVeiculoDTO;
 import com.lazaro.caronnar.dto.veiculo.VeiculoRespostaDTO;
 import com.lazaro.caronnar.model.entities.Veiculo;
+import com.lazaro.caronnar.util.PlacaNormalizador;
 
 public final class VeiculoMapper {
 
@@ -15,9 +16,10 @@ public final class VeiculoMapper {
         }
 
         Veiculo veiculo = new Veiculo();
-        veiculo.setPlaca(dto.placa());
+        veiculo.setPlaca(PlacaNormalizador.normalizar(dto.placa()));
         veiculo.setModelo(dto.modelo());
         veiculo.setCor(dto.cor());
+        veiculo.setCapacidadePassageiros(dto.capacidadePassageiros());
 
         return veiculo;
     }
@@ -31,7 +33,9 @@ public final class VeiculoMapper {
                 veiculo.getId(),
                 veiculo.getPlaca(),
                 veiculo.getModelo(),
-                veiculo.getCor()
+                veiculo.getCor(),
+                veiculo.getCapacidadePassageiros(),
+                veiculo.getAtivo()
         );
     }
 }
