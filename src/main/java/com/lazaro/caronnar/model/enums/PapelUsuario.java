@@ -2,5 +2,6 @@ package com.lazaro.caronnar.model.enums;
 
 public enum PapelUsuario {
     PASSAGEIRO,
-    MOTORISTA
+    MOTORISTA,
+    ADMIN
 }

@@ -5,11 +5,13 @@ import com.lazaro.caronnar.dto.usuario.UsuarioRespostaDTO;
 import com.lazaro.caronnar.exception.EmailJaCadastradoException;
 import com.lazaro.caronnar.exception.RecursoNaoEncontradoException;
 import com.lazaro.caronnar.model.entities.Usuario;
+import com.lazaro.caronnar.model.enums.PapelUsuario;
 import com.lazaro.caronnar.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -34,7 +36,7 @@ public class UsuarioService {
         usuario.setEmail(dto.email());
         usuario.setSenha(passwordEncoder.encode(dto.senha()));
         usuario.setTelefone(dto.telefone());
-        usuario.setPapeis(dto.papeis());
+        usuario.setPapeis(Set.of(PapelUsuario.PASSAGEIRO));
         usuario.setDataCadastro(LocalDateTime.now());
 
         Usuario salvo = usuarioRepository.save(usuario);
