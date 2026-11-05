@@ -1,3 +1,9 @@
 spring:
-  application:
-    name: caronnar
+  couchbase:
+    connection-string: couchbase://localhost
+    username: ${COUCHBASE_USERNAME}
+    password: ${COUCHBASE_PASSWORD}
+
+  data:
+    couchbase:
+      bucket-name: carona
