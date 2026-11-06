@@ -14,9 +14,16 @@ security:
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
 
 app:
+  timezone: ${APP_TIMEZONE:America/Sao_Paulo}
   veiculo:
     cadastro-ativo: ${CADASTRO_VEICULO_ATIVO:false}
+  viagem:
+    publicacao-ativa: ${PUBLICACAO_VIAGEM_ATIVA:false}
   couchbase:
     transaction:
       durability-level: ${COUCHBASE_TRANSACTION_DURABILITY:MAJORITY_AND_PERSIST_TO_ACTIVE}
+  osrm:
+    base-url: ${OSRM_BASE_URL:http://router.project-osrm.org}
+    connect-timeout-ms: ${OSRM_CONNECT_TIMEOUT_MS:3000}
+    read-timeout-ms: ${OSRM_READ_TIMEOUT_MS:5000}
 

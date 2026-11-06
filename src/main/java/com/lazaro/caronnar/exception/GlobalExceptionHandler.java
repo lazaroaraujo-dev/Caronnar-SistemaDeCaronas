@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -97,6 +98,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleTipoParametroInvalido(MethodArgumentTypeMismatchException ex) {
+        String nomeParametro = ex.getName() != null && !ex.getName().isBlank() ? ex.getName() : "desconhecido";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("erro", "Requisição inválida");
+        body.put("mensagem", "O parâmetro '" + nomeParametro + "' possui formato ou tipo inválido.");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     @ExceptionHandler(IdempotencyKeyInvalidaException.class)
     public ResponseEntity<Map<String, Object>> handleIdempotencyKeyInvalida(IdempotencyKeyInvalidaException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -172,5 +186,60 @@ public class GlobalExceptionHandler {
         body.put("mensagem", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(CoordenadasInvalidasException.class)
+    public ResponseEntity<Map<String, Object>> handleCoordenadasInvalidas(CoordenadasInvalidasException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("erro", "Coordenadas inválidas");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(RotaNaoEncontradaException.class)
+    public ResponseEntity<Map<String, Object>> handleRotaNaoEncontrada(RotaNaoEncontradaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("erro", "Rota não encontrada");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
+    }
+
+    @ExceptionHandler(RespostaExternaInvalidaException.class)
+    public ResponseEntity<Map<String, Object>> handleRespostaExternaInvalida(RespostaExternaInvalidaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_GATEWAY.value());
+        body.put("erro", "Erro de comunicação externa");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(body);
+    }
+
+    @ExceptionHandler(DataPartidaInvalidaException.class)
+    public ResponseEntity<Map<String, Object>> handleDataPartidaInvalida(DataPartidaInvalidaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("erro", "Data de partida inválida");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(RegraNegocioViagemException.class)
+    public ResponseEntity<Map<String, Object>> handleRegraNegocioViagem(RegraNegocioViagemException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("erro", "Entidade improcessável");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
     }
 }
