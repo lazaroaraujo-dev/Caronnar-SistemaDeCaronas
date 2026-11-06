@@ -97,6 +97,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    @ExceptionHandler(IdempotencyKeyInvalidaException.class)
+    public ResponseEntity<Map<String, Object>> handleIdempotencyKeyInvalida(IdempotencyKeyInvalidaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("erro", "Requisição inválida");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
     @ExceptionHandler(ServicoIndisponivelException.class)
     public ResponseEntity<Map<String, Object>> handleServicoIndisponivel(ServicoIndisponivelException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -106,5 +117,60 @@ public class GlobalExceptionHandler {
         body.put("mensagem", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
+    }
+
+    @ExceptionHandler(PlacaJaCadastradaException.class)
+    public ResponseEntity<Map<String, Object>> handlePlacaJaCadastrada(PlacaJaCadastradaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("erro", "Conflito");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(IdempotencyPayloadMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleIdempotencyPayloadMismatch(IdempotencyPayloadMismatchException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("erro", "Entidade improcessável");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
+    }
+
+    @ExceptionHandler(TransacaoAmbiguaException.class)
+    public ResponseEntity<Map<String, Object>> handleTransacaoAmbigua(TransacaoAmbiguaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+        body.put("erro", "Serviço indisponível");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
+    }
+
+    @ExceptionHandler(ContencaoConcorrenteException.class)
+    public ResponseEntity<Map<String, Object>> handleContencaoConcorrente(ContencaoConcorrenteException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+        body.put("erro", "Serviço indisponível");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
+    }
+
+    @ExceptionHandler(UsuarioNaoAutenticadoException.class)
+    public ResponseEntity<Map<String, Object>> handleUsuarioNaoAutenticado(UsuarioNaoAutenticadoException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+        body.put("erro", "Não autorizado");
+        body.put("mensagem", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 }
